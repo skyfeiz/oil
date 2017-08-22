@@ -1,0 +1,329 @@
+.actInfo{
+	width: 1590px;
+	height: 70px;
+	position: absolute;
+	left: 50%;
+	margin-left: -795px;
+	top: 109px;
+	background: url(../imgs/p2/repeatxy.png) rgba(4,133,216,0.3);
+}
+.pointbg{
+	position: absolute;
+	width: 3px;
+	height: 3px;
+	background-color: #00eaff;
+}
+.lt{
+	left: 0;
+	top: 0;
+}
+.rt{
+	right: 0;
+	top: 0;
+}
+.rb{
+	right: 0;
+	bottom: 0;
+}
+.lb{
+	left: 0;
+	bottom: 0;
+}
+
+.horn{
+	width: 70px;
+	height: 70px;
+	background: url(../imgs/p2/horn.png) 26px center no-repeat;
+}
+.infobox b{
+	font-size: 32px;
+	color: #fff;
+	font-weight: bold;
+	height: 70px;
+	line-height: 66px;
+}
+.infobox p{
+	padding-left: 10px;
+}
+.info_name{
+	font-size: 30px;
+	color: #00eaff;
+	height: 70px;
+	line-height: 66px;
+}
+.info_value{
+	font-size: 60px;
+	color: #fff;
+	height: 70px;
+	line-height: 70px;
+	padding-left: 20px;
+	font-family: 'DIN MEDIUM';
+}
+.info_unit{
+	font-size: 24px;
+	color: #ccd7e3;
+	height: 70px;
+	line-height: 90px;
+	padding-left: 6px;
+}
+p.info2{
+	padding-left: 90px;
+}
+
+.detailsBox{
+	width: 1590px;
+	height: 210px;
+	position: absolute;
+	left: 50%;
+	margin-left: -795px;
+	top:250px;
+}
+.lidiv{
+	width: 530px;
+	height: 100%;
+	position: relative;
+}
+.divleft{
+	width: 148px;
+	height: 100%;
+	border-right: 1px dashed #029fb5;
+	position: relative;
+}
+.divleft:after{
+	content: '';
+	position: absolute;
+	width: 6px;
+	height: 12px;
+	background: url(../imgs/p2/traingle_r.png) no-repeat;
+	right: -6px;
+	top: 100px;
+}
+.div_name{
+	color: #fff;
+	height: 45px;
+	font-size: 30px;
+	line-height: 30px;
+	background: url(../imgs/p2/fall.png) 114px 0 no-repeat;
+}
+.div_value{
+	height: 43px;
+	overflow: hidden;
+}
+.div_value .value{
+	color:#00eaff;
+	font-size: 36px;
+}
+.div_value .unit{
+	font-size: 18px;
+	line-height: 58px;
+	color: #ccd7e3;
+}
+
+.divright{
+	width: 352px;
+	height: 100%;
+	padding-left: 29px;
+}
+.conbox{
+	height: 83px;
+}
+.namebox{
+	font-size: 24px;
+	height: 26px;
+	line-height: 26px;
+}
+.namebox .time{
+	color: #04345a;
+	
+	border-radius: 3px;
+	background-color: #00eaff;
+}
+.namebox .name{
+	color: #00eaff;
+	padding-left: 10px;
+}
+.valuebox{
+	height: 57px;
+	overflow: hidden;
+}
+.valuebox .value{
+	font-size: 60px;
+	line-height: 66px;
+	font-family: 'DIN MEDIUM';
+	color: #fff;
+}
+.valuebox .unit{
+	color: #ccd7e3;
+	font-size: 24px;
+	line-height: 84px;
+}
+
+.divleft3{
+	width: 239px;
+	height: 100%;
+}
+.divleft3 .name{
+	font-size: 30px;
+	color: #fff;
+}
+.divleft3 .value{
+	font-size: 60px;
+	color: #fff;
+}
+
+.divright3{
+	width: 290px;
+	height: 100%;
+	position: absolute;
+	left: 240px;
+	top: 0;
+}
+
+.c_valuebox{
+	width: 128px;
+	height: 40px;
+	font-family: 'DIN MEDIUM';
+	overflow: hidden;
+	position: absolute;
+	left: 86px;
+	top: 118px;
+}
+.c_valuebox .value{
+	font-size: 36px;
+	color: #fff;
+	height: 40px;
+	line-height: 40px;
+}
+.c_valuebox .unit{
+	font-size: 24px;
+	color: #ccd7e3;
+	line-height: 48px;
+	padding-left: 4px;
+}
+.c_namebox{
+	font-size: 24px;
+	height: 24px;
+	line-height: 24px;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	text-align: center;
+	color: #fff;
+}
+.chart2box{
+	width: 1590px;
+	height: 400px;
+	position: absolute;
+	left: 50%;
+	margin-left: -795px;
+	top:530px;
+}
+.chart2box .titlebox{
+	height: 40px;
+}
+.chart2box .charttitle{
+	font-size: 30px;
+	color: #fff;
+	height: 40px;
+	line-height: 40px;
+}
+.chart2box .chartBtn{
+	width: 140px;
+	height: 40px;
+	background-color: #0485d8;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	line-height: 40px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+.chart2box .chartBtn.active{
+	background: -webkit-linear-gradient(left,#cc0000,#ff6600);
+}
+.chart2{
+	position: absolute;
+	width: 100%;
+	height: 360px;
+	left: 0;
+	top: 40px;
+}
+.leftbtn,.rightbtn{
+	position: absolute;
+	top: 510px;
+	width: 50px;
+	height: 60px;
+	background-color: #0485d8;
+	cursor: pointer;
+}
+.leftbtn:hover,.rightbtn:hover{
+	background: -webkit-linear-gradient(left,#cc0000,#ff6600);
+}
+.leftbtn.silent,.rightbtn.silent{
+	background: #666;
+}
+.leftbtn{
+	left: 0;
+	border-radius: 0 30px 30px 0;
+}
+.leftbtn:after{
+	content:'';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: url(../imgs/p2/leftbtn.png) 15px center no-repeat;
+}
+.rightbtn{
+	right: 0;
+	border-radius: 30px 0 0 30px;
+}
+.rightbtn:after{
+	content:'';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: url(../imgs/p2/rightbtn.png) 22px center no-repeat;
+}
+
+/* left */
+
+.left,.right{
+	width: 1590px;
+	position: absolute;
+	top: 140px;
+}
+.main{
+	position: absolute;
+	left: -1920px;
+	top: 0;
+	width: 5760px;
+	height: 100%;
+	/*transition: 2s all ease;*/
+}
+.left{
+	left: 165px;
+}
+.middle{
+	left:2085px;
+}
+.right{
+	left: 4005px;
+}
+.lefttitle{
+	font-size: 30px;
+	color: #fff;
+	height: 30px;
+	line-height: 30px;
+}
+.leftchart,.rightchart{
+	position: absolute;
+	width: 100%;
+	height: 760px;
+	left: 0;
+	top: 30px;
+}
