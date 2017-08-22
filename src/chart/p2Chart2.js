@@ -1,88 +1,36 @@
 import $ from 'jquery';
-import echarts from "echarts";
 
-class P2Chart2{
+import zrender from 'zrender';
+import RectShape from "zrender/lib/graphic/shape/Rect";
+import CircleShape from "zrender/lib/graphic/shape/Circle";
+import Group from "zrender/lib/container/Group";
+import LineShape from "zrender/lib/graphic/shape/Line";
+import TextShape from "zrender/lib/graphic/Text";
+import ImageShape from "zrender/lib/graphic/Image";
+import PolylineShape from "zrender/lib/graphic/Shape/Polyline";
+
+import BarItem from "./barItem.js";
+
+class P2Chart2 {
 	constructor(dom) {
-		this.myChart = echarts.init(dom);
+		this.zr = zrender.init(dom);
 
-		this.option = {
-			grid:{
-				left:'3%',
-				right:'0%',
-				top:'20%',
-				bottom:'10%',
-			},
-			legend:{
-				right:20,
-				top:20,
-				data:[],
-				itemWidth:37,
-				itemHeight:14,
-				textStyle:{
-					color:'#ccd7e3',
-					fontSize:20
-				}
-			},
-			xAxis:{
-				type:'category',
-				axisLine: {
-		    		lineStyle: {
-		    			color: '#00dcff'
-		    		}
-		    	},
-		    	axisTick: {
-		    		lineStyle: {
-		    			color: '#ffe600',
-		    			width: 3
-		    		},
-		    		length: 3,
-		    		alignWithLabel: true,
-		    		boundaryGap: true
-		    	},
-		    	axisLabel: {
-		    		textStyle: {
-		    			color: '#8ef3ff',
-		    			fontSize: 20,
-		    			fontFamily: 'DIN MEDIUM'
-		    		}
-		    	},
-		    	data:[]
-			},
-			yAxis:{
-				name:'千吨/日  ',
-				nameTextStyle:{
-					color:'#ccd7e3',
-					fontSize:20
-				},
-				nameGap:20,
-				axisLine: {
-		    		lineStyle: {
-		    			color: '#00dcff'
-		    		}
-		    	},
-		    	axisTick: {
-		    		lineStyle: {
-		    			color: '#ffe600',
-		    			width: 3
-		    		},
-		    		length: 3
-		    	},
-		    	axisLabel: {
-		    		textStyle: {
-		    			color: '#8ef3ff',
-		    			fontSize: 20,
-		    			fontFamily: 'DIN MEDIUM'
-		    		}
-		    	},
-		    	splitLine: {
-		    		show: true,
-		    		lineStyle: {
-		    			color: 'rgba(80, 167, 189, 0.3)'
-		    		}
-		    	}
-			},
-			series:[]
-		}
+		this.$dom = $(dom);
+
+		this.W = $(dom).width();
+		this.H = $(dom).height();
+
+		// 坐标轴的区域
+		this.zone = {
+			left: 60,
+			top: 100,
+			right: 0,
+			bottom: 60
+		};
+
+		this.itemW = 58;
+
+		this.legendImgArr = ['imgs/p2/icon1.png','imgs/p2/icon2.png'];
 	}
 
 	setConfig(value) {
@@ -95,68 +43,313 @@ class P2Chart2{
 	}
 
 	creationContent() {
-		let xAxisJson = {};
+		let _this = this;
+		let max = 0;
 		for (let i = 0; i < this._dataProvider.length; i++) {
-			let lJson = {
-				name:this._dataProvider[i].seriesName,
-				icon:'image://imgs/p2/icon'+(i+1)+'.png'
-			}
-			this.option.legend.data.push(lJson);
-
-			let json = {};
-
-			if (i === 0) {
-				json = {
-					type:'bar',
-					name:this._dataProvider[i].seriesName,
-					data:[],
-					barMaxWidth:60,
-					itemStyle:{
-						normal:{
-							color:'#0a9fff'
-						},
-						emphasis:{
-							color:'#00eaff'
-						}
-					},
-					legendHoverLink:false,
-					label:{
-						normal:{
-							show:true,
-							position:'top',
-							textStyle:{
-								color:'#fff',
-								fontFamily:'DIN MEDIUM',
-								fontSize:24
-							}
-						}
-					}
-				}
-			}else if (i === 1) {
-				json = {
-					type:'line',
-					name:this._dataProvider[i].seriesName,
-					data:[],
-					legendHoverLink:false,
-					symbol:'image://imgs/p2/linenode.png',
-					symbolSize:35,
-					lineStyle:{
-						normal:{
-							color:'#ff6600'
-						}
-					}
-				}
-			}
 			for (let j = 0; j < this._dataProvider[i].dataList.length; j++) {
-				json.data.push(this._dataProvider[i].dataList[j].value)
-				xAxisJson[this._dataProvider[i].dataList[j].name] = 1;
+				let iValue = this._dataProvider[i].dataList[j].value;
+				if (max < iValue) {
+					max = iValue;
+				}
 			}
-			this.option.series.push(json);
+			this.drawLegend(this.W - this.zone.right - 270 + 170*i,40,this._dataProvider[i].seriesName,this.legendImgArr[i]);
 		}
-		for (let key in xAxisJson) {
-			this.option.xAxis.data.push(key);
+		let yMax = this.getMax(max);
+		this.createGrid(yMax, this._dataProvider[0].dataList);
+
+		let tH = this.H - this.zone.top - this.zone.bottom;
+		for (var i = 0; i < this._dataProvider[0].dataList.length; i++) {
+			let iValue = this._dataProvider[0].dataList[i].value;
+			let iH = iValue / yMax * tH;
+			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left) / this._dataProvider[0].dataList.length;
+			new BarItem({
+				x: this.zone.left - 3 + w - 1,
+				y: this.H - this.zone.bottom,
+				h:iH,
+				zr:this.zr,
+				duration:1000,
+				delay:i*100,
+				onComplete:function(){
+					_this.drawPoints(_this.zone.left - 3 + w - 1,_this.H - _this.zone.bottom,iH);
+				}
+			})
+			let img = new ImageShape({
+				style:{
+					x:this.zone.left - 3 + w - 1 - 23.5,
+					y:this.H - this.zone.bottom - iH - 48,
+					width:43,
+					height:46,
+					image:'imgs/p2/barTop.png'
+				}
+			})
+			this.zr.add(img);
+
+			let text = new TextShape({
+				style:{
+					x:this.zone.left - 3 + w - 1,
+					y:this.H - this.zone.bottom - iH - 48 - 4,
+					text:iValue,
+					fill:'#fff',
+					font: 'normal 30px DIN MEDIUM',
+					textAlign:'center'
+				}
+			})
+			this.zr.add(text);
 		}
-		this.myChart.setOption(this.option);
+		let linesArr = [];
+		for (var i = 0; i < this._dataProvider[1].dataList.length; i++) {
+			let iValue = this._dataProvider[1].dataList[i].value;
+			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left) / this._dataProvider[0].dataList.length;
+			let iH = iValue / yMax * tH;
+			let x = this.zone.left - 3 + w - 1;
+			let y = this.H - this.zone.bottom - iH;
+			linesArr.push([x,y])
+		}
+		let lines = new PolylineShape({
+			shape:{
+				points:linesArr
+			},
+			style:{
+				stroke:'#ff9800',
+				lineWidth:4
+			},
+			zlevel:3
+		})
+		for (var i = 0; i < linesArr.length; i++) {
+			this.drawLineNode(linesArr[i][0],linesArr[i][1]);
+		}
+		let group = new Group();
+		this.zr.add(group);
+		let limitRect = new RectShape({
+			shape:{
+				x:linesArr[0][0],
+				y:0,
+				width:0,
+				height:this.H
+			}
+		})
+		group.setClipPath(limitRect);
+		group.add(lines);
+		limitRect.animateShape().when(2000,{
+			width:linesArr[linesArr.length - 1][0]
+		}).start();
+	}
+	/**
+	 * [createGrid description]
+	 * @param  {[number]} max y轴数据的最大值
+	 * @param  {[array]} arr x轴的类目名数组
+	 */
+	createGrid(yMax, arr) {
+		let lineY = new LineShape({
+			shape: {
+				x1: this.zone.left,
+				y1: this.zone.top,
+				x2: this.zone.left,
+				y2: this.H - this.zone.bottom
+			},
+			style: {
+				stroke: '#0485d8',
+				lineWidth: 1
+			}
+		})
+		this.zr.add(lineY);
+
+		let textYName = new TextShape({
+			style: {
+				x: this.zone.left - 10,
+				y: this.zone.top - 30,
+				fill: '#ccd7e3',
+				font: 'normal 20px Microsoft Yahei',
+				text: '千吨/日',
+				textAlign: 'center'
+			}
+		})
+		this.zr.add(textYName);
+
+		// y轴打点 6个点
+
+		for (let i = 0; i <= 6; i++) {
+			let h = i / 6 * (this.H - this.zone.bottom - this.zone.top);
+			let rect = new RectShape({
+				shape: {
+					x: this.zone.left - 3,
+					y: this.H - this.zone.bottom - h - 1,
+					width: 3,
+					height: 3
+				},
+				style: {
+					fill: '#ffe600'
+				}
+			})
+			this.zr.add(rect);
+			let line = new LineShape({
+				shape: {
+					x1: this.zone.left,
+					y1: this.H - this.zone.bottom - h,
+					x2: this.W - this.zone.right,
+					y2: this.H - this.zone.bottom - h
+				},
+				style: {
+					stroke: 'rgba(4,133,216,0.5)'
+				}
+			})
+			this.zr.add(line);
+			let text = new TextShape({
+				style: {
+					x: 50,
+					y: this.H - this.zone.bottom - h + 8,
+					text: yMax / 6 * i,
+					fill: '#8df3ff',
+					font: 'normal 20px DIN MEDIUM',
+					textAlign: 'right'
+				}
+			})
+			this.zr.add(text);
+		}
+		let lineX = new LineShape({
+			shape: {
+				x1: this.zone.left,
+				y1: this.H - this.zone.bottom,
+				x2: this.W - this.zone.right,
+				y2: this.H - this.zone.bottom
+			},
+			style: {
+				stroke: '#0485d8',
+				lineWidth: 1
+			}
+		})
+		this.zr.add(lineX);
+		for (let i = 0; i < arr.length; i++) {
+			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left) / arr.length;
+			let rect = new RectShape({
+				shape: {
+					x: this.zone.left - 3 + w - 1,
+					y: this.H - this.zone.bottom,
+					width: 3,
+					height: 3
+				},
+				style: {
+					fill: '#ffe600'
+				}
+			})
+			this.zr.add(rect);
+			let text = new TextShape({
+				style: {
+					x: this.zone.left - 3 + w,
+					y: this.H - this.zone.bottom + 30,
+					text: arr[i].name,
+					fill: '#8df3ff',
+					font: 'normal 20px DIN MEDIUM',
+					textAlign: 'center'
+				}
+			})
+			this.zr.add(text);
+		}
+	}
+
+	drawLegend(x, y, name, imgSrc) {
+		let img = new ImageShape({
+			style: {
+				x: x,
+				y: y - 14,
+				width: 37,
+				height: 14,
+				image:imgSrc
+			}
+		})
+		this.zr.add(img);
+		let text = new TextShape({
+			style: {
+				x: x + 40,
+				y: y,
+				fill: '#ccd7e3',
+				font: 'normal 20px Microsoft Yahei',
+				text: name,
+			}
+		})
+		this.zr.add(text);
+	}
+
+	drawLineNode(x,y){
+		let circle1 = new CircleShape({
+			shape:{
+				cx:x,
+				cy:y,
+				r:7
+			},
+			zlevel:4,
+			style:{
+				fill:'#cc0100'
+			}
+		})
+		let circle2 = new CircleShape({
+			shape:{
+				cx:x,
+				cy:y,
+				r:4
+			},
+			zlevel:5,
+			style:{
+				fill:'#fff'
+			}
+		})
+		this.zr.add(circle2)
+
+		this.zr.add(circle1)
+	}
+
+	drawPoints(x,y,h){
+		let nPoints = 30;
+		let group = new Group();
+		this.zr.add(group);
+		let rect = new RectShape({
+			shape:{
+				x:x - this.itemW/2,
+				y:y - h,
+				width:this.itemW,
+				height:h,
+			}
+		});
+		group.setClipPath(rect);
+		for (let i = 0; i < nPoints; i++) {
+			let rnX = Math.random() * 50 - 25;
+			let rnY = Math.random() * 8;
+			let rnT = Math.random() * 2000;
+			let rnD = Math.random() * 3000+3000;
+			let circle = new CircleShape({
+				shape:{
+					cx:x - rnX,
+					cy:y - rnY + 10,
+					r:1
+				},
+				zlevel:1,
+				style:{
+					fill:'rgba(255,230,0,1)'
+				}
+			})
+			group.add(circle);
+			circle.animateShape(true).when(rnD,{
+				cx:x,
+				cy:y - h
+			}).delay(rnT).start();
+			circle.animateStyle(true).when(rnD,{
+				fill:'rgba(255,230,0,0)'
+			}).delay(rnT).start();
+		}
+	}
+
+	//根据 n 取得最大值，该最大值必须是6的倍数
+	getMax(N) {
+		N *= 1.2;
+		return n6(6);
+
+		function n6(n) {
+			if (n > N) {
+				return n;
+			} else {
+				return n6(6 + n);
+			}
+		}
 	}
 }
 module.exports = P2Chart2;

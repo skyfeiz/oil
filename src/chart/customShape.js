@@ -2,6 +2,8 @@ import zrender from 'zrender';
 import RectShape from "zrender/lib/graphic/shape/Rect.js";
 import CircleShape from "zrender/lib/graphic/shape/Circle.js";
 import Group from "zrender/lib/container/Group";
+import PolygonShape from 'zrender/lib/graphic/shape/Polygon';
+import LineGradient from "zrender/lib/graphic/LinearGradient";
 
 class CustomShape {
 	constructor(opts) {
@@ -10,7 +12,7 @@ class CustomShape {
 	init(opts){
 
 		let w = opts.w || 120;
-		let color = opts.color || '#00eaff';
+		let color = opts.color || 'rgba(0,234,255,1)';
 
 		this.duration = opts.duration || 0;
 		this.valueText = opts.valueText || null;
@@ -54,10 +56,19 @@ class CustomShape {
 				width: w,
 				height: h
 			},
+			zlevel:2,
 			style: {
-				fill: color
+				fill: color.substring(0, color.lastIndexOf(',')) + ',1)'
 			}
 		})
+		let colorLinear = [{
+                offset: 1,
+                color: color
+            },{
+                offset: 0,
+                color: color.substring(0, color.lastIndexOf(',')) + ',0.2)'
+            }]
+		// this.drawShaodw(x - w / 2,y - h,w,h,colorLinear,20);
 
 		// 画 6的 圆
 		let arr = [y - this.cR, y - h / 2, y - h + this.cR];
@@ -91,6 +102,75 @@ class CustomShape {
 		this.group.add(this.topCircle);
 		this.animation(opts.onComplete);
 	}
+
+	drawShaodw(x, y, w, h, color,len) {
+        let shadowLen = len || 10;
+
+        let topColor = new LineGradient(0, 1, 0, 0, color, false);
+        let rightColor = new LineGradient(0, 0, 1, 0, color, false);
+        let bottomColor = new LineGradient(0, 0, 0, 1, color, false);
+        let leftColor = new LineGradient(1, 0, 0, 0, color, false);
+
+        let top = new PolygonShape({
+            shape: {
+                points: [
+                    [x, y],
+                    [x + shadowLen, y + shadowLen],
+                    [x + w - shadowLen, y + shadowLen],
+                    [x + w, y]
+                ]
+            },
+            style: {
+                fill: topColor
+            }
+        })
+
+        let right = new PolygonShape({
+            shape: {
+                points: [
+                    [x + w, y],
+                    [x + w - shadowLen, y + shadowLen],
+                    [x + w - shadowLen, y + h - shadowLen],
+                    [x + w, y + h]
+                ]
+            },
+            style: {
+                fill: rightColor
+            }
+        })
+
+        let bottom = new PolygonShape({
+            shape: {
+                points: [
+                    [x + w, y + h],
+                    [x + w - shadowLen, y + h - shadowLen],
+                    [x + shadowLen, y + h - shadowLen],
+                    [x, y + h]
+                ]
+            },
+            style: {
+                fill: bottomColor
+            }
+        })
+
+        let left = new PolygonShape({
+            shape: {
+                points: [
+                    [x, y + h],
+                    [x + shadowLen, y + h - shadowLen],
+                    [x + shadowLen, y + shadowLen],
+                    [x, y]
+                ]
+            },
+            style: {
+                fill: leftColor
+            }
+        })
+        this.zr.add(top)
+        this.zr.add(right)
+        this.zr.add(bottom)
+        this.zr.add(left);
+    }
 
 	animation(fn){
 		let _this = this;

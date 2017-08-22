@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import DropletBg from '../chart/dropletBg.js';
+import Wchart from '../chart/wchart.js';
 
 let $navlis = $('#navUl').find('li');
 
@@ -13,6 +14,8 @@ $navlis.click(function(){
 		$(ele).attr('class','li'+(idx-index+7)%5);
 	})
 })
+
+Wchart(1540,920);
 
 let idArr = ['droplet1','droplet2','droplet3','droplet4'];
 for (var i = 0; i < idArr.length; i++) {

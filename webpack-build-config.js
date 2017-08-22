@@ -33,7 +33,9 @@ module.exports = {
         }]
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            comments:false
+        }),
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, 'src/asset'),
             to: path.resolve(__dirname,'dist/asset')

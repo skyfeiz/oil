@@ -24,24 +24,64 @@ class P2Chart1{
 	creationContent() {
 		let _this = this;
 		let vec2 = {
-			x:140,
-			y:140
+			x:137,
+			y:134
 		};
-		let r = 64;
-		let w = 12;
-		let circle = new CircleShape({
+		let r = 68;
+		let w = 18;
+
+		let circle0 = new CircleShape({
 			shape:{
 				cx:vec2.x,
 				cy:vec2.y,
-				r:r,
+				r:52,
 			},
 			style:{
 				fill:'none',
-				lineWidth:w,
-				stroke:'#0665a5',
+				lineWidth:1,
+				stroke:'#013854',
 			}
 		})
-		this.zr.add(circle);
+		this.zr.add(circle0);
+		let circle1 = new CircleShape({
+			shape:{
+				cx:vec2.x,
+				cy:vec2.y,
+				r:64,
+			},
+			style:{
+				fill:'none',
+				lineWidth:12,
+				stroke:'#042554',
+			}
+		})
+		this.zr.add(circle1);
+		let circle2 = new CircleShape({
+			shape:{
+				cx:vec2.x,
+				cy:vec2.y,
+				r:79,
+			},
+			style:{
+				fill:'none',
+				lineWidth:10,
+				stroke:'#012046',
+			}
+		})
+		this.zr.add(circle2);
+		let circle3 = new CircleShape({
+			shape:{
+				cx:vec2.x,
+				cy:vec2.y,
+				r:89,
+			},
+			style:{
+				fill:'none',
+				lineWidth:1,
+				stroke:'#014e6c',
+			}
+		})
+		this.zr.add(circle3);
 
 		this.sR = 0;
 		for (var i = 0; i < this._dataProvider.length; i++) {
@@ -61,7 +101,6 @@ class P2Chart1{
 					fill:'none',
 					lineWidth:w,
 					stroke:'#ff9800',
-					lineCap:'round'
 				}
 			})
 			this.zr.add(arc);

@@ -2,6 +2,7 @@ import $ from 'jquery';
 import P2Chart1 from './../chart/p2Chart1.js';
 import P2Chart2 from './../chart/p2Chart2.js';
 import P2LeftChart from './../chart/p2LeftChart.js';
+import Wchart from '../chart/wchart.js';
 
 let p2Chart1 = new P2Chart1(document.getElementById('chartPi'));
 let data1 = [{
@@ -9,7 +10,7 @@ let data1 = [{
 	value: 62.08
 }];
 p2Chart1.setDataProvider(data1);
-
+Wchart(1540,920);
 let p2Chart2 = new P2Chart2(document.getElementById('chart2'));
 let data2 = [{
 	seriesName: '日均产油量',
@@ -87,7 +88,7 @@ let data2 = [{
 		value: 320
 	}, {
 		name: '2017-12',
-		value: 345
+		value: 330
 	}]
 }];
 p2Chart2.setDataProvider(data2);

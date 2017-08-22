@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Wchart from '../chart/wchart.js';
 var oGroups;
 var oCurrentGroup;
 //var oSlider;
@@ -10,7 +11,7 @@ _getGroups();
 oImgs = document.getElementById('imgs');
 oTxt = document.getElementById('txt');
 oTemplate = oTxt.innerHTML;
-
+Wchart(1540,920);
 function _getGroups() {
     $.getJSON('asset/groupList.json', null, function(data) {
         var groups = data.data;
@@ -161,8 +162,8 @@ function _getImgs() {
         oImgs.removeChild(oImgs.firstChild);
     }
 
-    var _maxW = 816,
-        _maxH = 560;
+    var _maxW = 828,
+        _maxH = 554;
 
     $.getJSON('asset/imgList.json', null, function(data) {
         var imgs = data.data;
@@ -173,12 +174,6 @@ function _getImgs() {
             var item = imgs[i];
 
             var oLi = document.createElement('li');
-            for (var j = 0; j < 4; j++) {
-                var disc = document.createElement('img');
-                disc.src = "imgs/p6/disc.png";
-                oLi.appendChild(disc);
-            }
-
 
             oLi._index = totalNum - 1 - i;
             oLi._data = item;
@@ -272,9 +267,9 @@ function _doCheckImgLoad() {
             oLi.css({
                 left: '-300px',
                 top: maxH / 2 + 'px',
-                width: '0',
-                height: '0',
-                opacity: 0.2
+                /*width: '0',
+                height: '0',*/
+                opacity: 0.2,
             });
 
             var timer; // 解决单击、双击冲突
@@ -442,10 +437,13 @@ function _moveImg(currentIndex, direction) {
             oLi.animate({
                 left: window.innerWidth / 2 + maxW / 2 + 'px',
                 top: -(window.innerHeight / 2 - maxH / 2) + 'px',
-                width: window.innerHeight * oLi._showW / oLi._showH + 'px',
-                height: window.innerHeight + 'px',
+                // width: window.innerHeight * oLi._showW / oLi._showH + 'px',
+                // height: window.innerHeight + 'px',
                 opacity: 0
             });
+            // oLi.css({
+            //     transform:'scale('+window.innerHeight/554+')',
+            // })
         }
         // 当前点击的图片，运动至屏幕中央
         else if (i == currentIndex) {
@@ -461,37 +459,34 @@ function _moveImg(currentIndex, direction) {
             oLi.animate({
                 left: '0',
                 top: '0',
-                width: oLi._showW + 'px',
-                height: oLi._showH + 'px',
+                // width: oLi._showW + 'px',
+                // height: oLi._showH + 'px',
                 opacity: 1
             });
+            oLi.css({
+                transform:'scale('+oLi._showH/554+')',
+            })
 
-            $('#imgs li').css('box-shadow', '');
             if (i == 0) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0);
-                $('#imgs li').eq(0).css('box-shadow', '1px 9px 18px 0px rgba(0,0,0,0.6)');
             } else if (i == 1) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0.1);
                 $('#imgs li').eq(1).find('.liMask').css('opacity', 0);
-                $('#imgs li').eq(1).css('boxShadow', '1px 9px 18px 0px rgba(0,0,0,0.6)');
             } else if (i == 2) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0.2);
                 $('#imgs li').eq(1).find('.liMask').css('opacity', 0.1);
                 $('#imgs li').eq(2).find('.liMask').css('opacity', 0);
-                $('#imgs li').eq(2).css('boxShadow', '1px 9px 18px 0px rgba(0,0,0,0.6)');
             } else if (i == 3) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0.3);
                 $('#imgs li').eq(1).find('.liMask').css('opacity', 0.2);
                 $('#imgs li').eq(2).find('.liMask').css('opacity', 0.1);
                 $('#imgs li').eq(3).find('.liMask').css('opacity', 0);
-                $('#imgs li').eq(3).css('boxShadow', '1px 9px 18px 0px rgba(0,0,0,0.6)');
             } else if (i == 4) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0.4);
                 $('#imgs li').eq(1).find('.liMask').css('opacity', 0.3);
                 $('#imgs li').eq(2).find('.liMask').css('opacity', 0.2);
                 $('#imgs li').eq(3).find('.liMask').css('opacity', 0.1);
                 $('#imgs li').eq(4).find('.liMask').css('opacity', 0);
-                $('#imgs li').eq(4).css('boxShadow', '1px 9px 18px 0px rgba(0,0,0,0.6)');
             } else if (i == 5) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0.5);
                 $('#imgs li').eq(1).find('.liMask').css('opacity', 0.4);
@@ -499,7 +494,6 @@ function _moveImg(currentIndex, direction) {
                 $('#imgs li').eq(3).find('.liMask').css('opacity', 0.2);
                 $('#imgs li').eq(4).find('.liMask').css('opacity', 0.1);
                 $('#imgs li').eq(5).find('.liMask').css('opacity', 0);
-                $('#imgs li').eq(5).css('boxShadow', '1px 9px 18px 0px rgba(0,0,0,0.6)');
             }
 
 
@@ -522,15 +516,17 @@ function _moveImg(currentIndex, direction) {
             // liMask.animate({
             //     opacity: 0.9
             // });
-
             oLi.animate({
                 left: nextL + 'px',
                 top: maxH / 2 - h / 2 + 'px',
-                width: w + 'px',
-                height: h + 'px',
+                // width: w + 'px',
+                // height: h + 'px',
+                
                 opacity: 1
             })
-
+            oLi.css({
+                transform:'scale('+h/554+')',
+            })
             scale -= 0.18;
             index -= 2;
         }

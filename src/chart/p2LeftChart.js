@@ -18,9 +18,9 @@ class P2LeftChart {
 		this.H = $(dom).height();
 
 		this.barW = 120;
-		this.barColors = ['#00eaff', '#0a9fff'];
+		this.barColors = ['rgba(0,234,255,1)', 'rgba(10,159,255,1)'];
 
-		this.imgArr = ['imgs/p2/arrow_up.png','imgs/p2/fall.png'];
+		this.imgArr = ['imgs/p2/arrow_up.png', 'imgs/p2/fall.png'];
 
 		// 坐标轴的区域
 		this.zone = {
@@ -67,7 +67,7 @@ class P2LeftChart {
 			for (let j = 0; j < this._dataProvider[i].dataList.length; j++) {
 				let iValue = this._dataProvider[i].dataList[j].value;
 				let iH = iValue / yMax * tH;
-				let w = (j + 0.6) * (this.W - this.zone.right - this.zone.left ) / 3.2;
+				let w = (j + 0.6) * (this.W - this.zone.right - this.zone.left) / 3.2;
 				let text = new TextShape({
 					style: {
 						x: _this.zone.left - 3 + w - 1 + (2 * i - 1) * (27 + _this.barW / 2),
@@ -92,13 +92,13 @@ class P2LeftChart {
 					}
 				});
 			}
-			this.drawLegend(this.W - 180,40+30*i,this._dataProvider[i].seriesName,this.barColors[i]);
+			this.drawLegend(this.W - 180, 40 + 30 * i, this._dataProvider[i].seriesName, this.barColors[i]);
 		}
 	}
 
 	/**
 	 * [createGrid description]
-	 * @param  {[number]} max y轴数据的最大值
+	 * @param  {[number]} yMax y轴数据的最大值
 	 * @param  {[array]} arr x轴的类目名数组
 	 */
 	createGrid(yMax, arr) {
@@ -182,7 +182,7 @@ class P2LeftChart {
 		})
 		this.zr.add(lineX);
 		for (let i = 0; i < arr.length; i++) {
-			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left ) / 3.2;
+			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left) / 3.2;
 			let rect = new RectShape({
 				shape: {
 					x: this.zone.left - 3 + w - 1,
@@ -230,14 +230,14 @@ class P2LeftChart {
 		for (var i = 0; i < dataArr[0].length; i++) {
 			let nDis = (dataArr[1][i] - dataArr[0][i]).toFixed(2);
 			let nPecnet = (nDis / dataArr[0][i] * 100).toFixed(2);
-			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left ) / 3.2;
+			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left) / 3.2;
 			let x = this.zone.left - 3 + w - 1 - 60;
 			let y = this.zone.top - 72;
 			let img = new ImageShape({
 				style: {
 					x: x,
 					y: y + 12,
-					image: this.imgArr[(nDis<0?1:0)],
+					image: this.imgArr[(nDis < 0 ? 1 : 0)],
 					width: 20,
 					height: 36
 				}
@@ -286,23 +286,23 @@ class P2LeftChart {
 		}
 	}
 
-	drawLegend(x,y,name,color){
+	drawLegend(x, y, name, color) {
 		let rect = new RectShape({
-			shape:{
-				x:x,
-				y:y-14,
-				width:26,
-				height:14
+			shape: {
+				x: x,
+				y: y - 14,
+				width: 26,
+				height: 14
 			},
-			style:{
-				fill:color
+			style: {
+				fill: color
 			}
 		})
 		this.zr.add(rect);
 		let text = new TextShape({
-			style:{
-				x:x+40,
-				y:y,
+			style: {
+				x: x + 40,
+				y: y,
 				fill: '#ccd7e3',
 				font: 'normal 20px Microsoft Yahei',
 				text: name,

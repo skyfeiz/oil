@@ -1,3 +1,6 @@
+h4,h4{
+    font-weight: normal;
+}
 .root{
     background: url(../imgs/p6/p6bg.jpg) center #043a64 no-repeat;
 }
@@ -89,7 +92,7 @@
     font-size:28px;
     height:50px;
     line-height:50px;
-    color:#fff;
+    color:#ffe600;
     background:url('../imgs/p6/selected.png') no-repeat  center left;
 }
 #slider {
@@ -114,11 +117,15 @@
     display: none;
 }
 #imgs li {
+    width: 828px;
+    height: 554px;
     position: absolute;
-    background:#0165ab url('../imgs/p6/lines.png');
+    background:url('../imgs/p6/borderbg.png') no-repeat;
     padding-left:64px;
     padding-right:50px;
-     overflow:hidden;
+    overflow:hidden;
+    transform-origin: left top;
+    transition:1s transform ease;
 }
 
 #imgs li img{
