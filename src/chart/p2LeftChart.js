@@ -46,6 +46,7 @@ class P2LeftChart {
 		let max = 0;
 		let _this = this;
 		// 二维数组 [[40,50,60],[35,56,45]]
+		let imgSrcArr = ['imgs/p2/leftbar1.png','imgs/p2/leftbar2.png'];
 		let dataArr = [];
 		for (let i = 0; i < this._dataProvider.length; i++) {
 			let arr = [];
@@ -84,6 +85,7 @@ class P2LeftChart {
 					y: this.H - this.zone.bottom,
 					w: this.barW,
 					h: iH,
+					imgSrc:imgSrcArr[i],
 					color: this.barColors[i],
 					duration: 2000,
 					valueText: text,

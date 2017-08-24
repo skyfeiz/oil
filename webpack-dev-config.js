@@ -12,7 +12,8 @@ module.exports = {
     entry: {
         p2:'./src/js/p2.js',
         p6:'./src/js/p6.js',
-        index:'./src/js/index.js'
+        index:'./src/js/index.js',
+        text:'./src/js/text.js'
     },
     output: {
         path: distPath,
@@ -70,6 +71,12 @@ module.exports = {
             template:path.resolve(__dirname,'./src/p6.html'),
             chunks:['p6'],
             title:'地面工程'
+        }),
+        new htmlWebpackPlugin({
+            filename:'test.html',
+            template:path.resolve(__dirname,'./src/test.html'),
+            chunks:['test'],
+            title:'测试页面'
         })
     ]
 };

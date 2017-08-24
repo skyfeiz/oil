@@ -62,6 +62,28 @@ class P2Chart2 {
 			let iValue = this._dataProvider[0].dataList[i].value;
 			let iH = iValue / yMax * tH;
 			let w = (i + 0.6) * (this.W - this.zone.right - this.zone.left) / this._dataProvider[0].dataList.length;
+			let oldY = this.H - this.zone.bottom - 40;
+			let img = new ImageShape({
+				style:{
+					x:this.zone.left - 3 + w - 1 - 22,
+					y:oldY,
+					width:43,
+					height:46,
+					image:'imgs/p2/barTop.png'
+				}
+			})
+			this.zr.add(img);
+			let text = new TextShape({
+				style:{
+					x:this.zone.left - 3 + w - 1,
+					y:oldY - 8,
+					text:0,
+					fill:'#fff',
+					font: 'normal 30px DIN MEDIUM',
+					textAlign:'center'
+				}
+			})
+			this.zr.add(text);
 			new BarItem({
 				x: this.zone.left - 3 + w - 1,
 				y: this.H - this.zone.bottom,
@@ -71,30 +93,17 @@ class P2Chart2 {
 				delay:i*100,
 				onComplete:function(){
 					_this.drawPoints(_this.zone.left - 3 + w - 1,_this.H - _this.zone.bottom,iH);
-				}
-			})
-			let img = new ImageShape({
-				style:{
-					x:this.zone.left - 3 + w - 1 - 23.5,
-					y:this.H - this.zone.bottom - iH - 48,
-					width:43,
-					height:46,
-					image:'imgs/p2/barTop.png'
-				}
-			})
-			this.zr.add(img);
+				},
+				during:function(percent){
+					img.style.y = oldY - iH * percent;
+					img.dirty();
 
-			let text = new TextShape({
-				style:{
-					x:this.zone.left - 3 + w - 1,
-					y:this.H - this.zone.bottom - iH - 48 - 4,
-					text:iValue,
-					fill:'#fff',
-					font: 'normal 30px DIN MEDIUM',
-					textAlign:'center'
+					text.style.text = (iValue * percent).toFixed(2);
+					text.style.y = oldY - iH * percent - 8;
+					text.dirty();
 				}
 			})
-			this.zr.add(text);
+
 		}
 		let linesArr = [];
 		for (var i = 0; i < this._dataProvider[1].dataList.length; i++) {
@@ -277,7 +286,7 @@ class P2Chart2 {
 				cy:y,
 				r:7
 			},
-			zlevel:4,
+			zlevel:5,
 			style:{
 				fill:'#cc0100'
 			}
@@ -288,18 +297,46 @@ class P2Chart2 {
 				cy:y,
 				r:4
 			},
-			zlevel:5,
+			zlevel:6,
 			style:{
 				fill:'#fff'
 			}
 		})
 		this.zr.add(circle2)
-
 		this.zr.add(circle1)
+		let shadow = new CircleShape({
+			shape:{
+				cx:x,
+				cy:y,
+				r:18
+			},
+			zlevel:4,
+			style:{
+				fill:'rgba(255,230,0,0.4)'
+			}
+		})
+		this.zr.add(shadow);
+		shadow.hide();
+		circle2.on('mouseover',function(){
+			shadow.shape.x = this.shape.x;
+			shadow.shape.y = this.shape.y;
+			shadow.shape.r = 8;
+			shadow.animateShape().when(100,{
+				r:16
+			}).start();
+			shadow.show();
+		})
+		circle2.on('mouseout',function(){
+			shadow.animateShape().when(100,{
+				r:8
+			}).start().done(function(){
+				shadow.hide();
+			});
+		})
 	}
 
 	drawPoints(x,y,h){
-		let nPoints = 30;
+		let nPoints = 50;
 		let group = new Group();
 		this.zr.add(group);
 		let rect = new RectShape({

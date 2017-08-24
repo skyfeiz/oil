@@ -174,7 +174,7 @@ function _getImgs() {
             var item = imgs[i];
 
             var oLi = document.createElement('li');
-
+            oLi.className = 'li'+i;
             oLi._index = totalNum - 1 - i;
             oLi._data = item;
             oLi.style.width = _maxW + 'px';
@@ -187,7 +187,8 @@ function _getImgs() {
             // oImg.src = item.url;
             var oImga = document.createElement('p');
             oImga.style.color = "#fff";
-            oImga.innerHTML = '<h3>' + item.title + '</h3><h4>' + item.name1 + '</h4><p>' + item.content1 + '</p><h4>' + item.name2 + '</h4><p>' + item.content2 + '</p>';;
+            // oImga.innerHTML = '<h3>' + item.title + '</h3><h4>' + item.name1 + '</h4><p>' + item.content1 + '</p><h4>' + item.name2 + '</h4><p>' + item.content2 + '</p>';
+            oImga.innerHTML = '';
             // oLi.appendChild(oImg);
             oLi.appendChild(oImga);
 
@@ -435,10 +436,14 @@ function _moveImg(currentIndex, direction) {
             //});
 
             oLi.animate({
-                left: window.innerWidth / 2 + maxW / 2 + 'px',
-                top: -(window.innerHeight / 2 - maxH / 2) + 'px',
+                // left: window.innerWidth / 2 + maxW / 2 + 'px',
+                // top: -(window.innerHeight / 2 - maxH / 2) + 'px',
                 // width: window.innerHeight * oLi._showW / oLi._showH + 'px',
                 // height: window.innerHeight + 'px',
+                left: 400 + 'px',
+                top: -100 + 'px',
+                width:1000,
+                height:700,
                 opacity: 0
             });
             // oLi.css({
@@ -459,13 +464,13 @@ function _moveImg(currentIndex, direction) {
             oLi.animate({
                 left: '0',
                 top: '0',
-                // width: oLi._showW + 'px',
-                // height: oLi._showH + 'px',
+                width: oLi._showW + 'px',
+                height: oLi._showH + 'px',
                 opacity: 1
             });
-            oLi.css({
-                transform:'scale('+oLi._showH/554+')',
-            })
+            // oLi.css({
+            //     transform:'scale('+oLi._showH/554+')',
+            // })
 
             if (i == 0) {
                 $('#imgs li').eq(0).find('.liMask').css('opacity', 0);
@@ -519,14 +524,13 @@ function _moveImg(currentIndex, direction) {
             oLi.animate({
                 left: nextL + 'px',
                 top: maxH / 2 - h / 2 + 'px',
-                // width: w + 'px',
-                // height: h + 'px',
-                
+                width: w + 'px',
+                height: h + 'px',
                 opacity: 1
             })
-            oLi.css({
-                transform:'scale('+h/554+')',
-            })
+            // oLi.css({
+            //     transform:'scale('+h/554+')',
+            // })
             scale -= 0.18;
             index -= 2;
         }

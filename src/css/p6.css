@@ -117,17 +117,32 @@ h4,h4{
     display: none;
 }
 #imgs li {
-    width: 828px;
-    height: 554px;
     position: absolute;
-    background:url('../imgs/p6/borderbg.png') no-repeat;
     padding-left:64px;
     padding-right:50px;
     overflow:hidden;
-    transform-origin: left top;
-    transition:1s transform ease;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
-
+#imgs li.li0{
+    background-image:url('../imgs/p6/borderbg0.png')
+}
+#imgs li.li1{
+    background-image:url('../imgs/p6/borderbg1.png')
+}
+#imgs li.li2{
+    background-image:url('../imgs/p6/borderbg2.png')
+}
+#imgs li.li3{
+    background-image:url('../imgs/p6/borderbg3.png')
+}
+#imgs li.li4{
+    background-image:url('../imgs/p6/borderbg4.png')
+}
+#imgs li.li5{
+    background-image:url('../imgs/p6/borderbg5.png')
+}
 #imgs li img{
     position:absolute;
 }
